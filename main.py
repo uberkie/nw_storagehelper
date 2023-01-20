@@ -247,7 +247,7 @@ def ocr_worker():
         snapshot_queue.task_done()
 
 def store_data(item):
-    if (not item.name) or (not item.gs):
+    if (not item.name) or (not item.gs) or (not (item.con > 0 or item.str > 0 or item.dex > 0 or item.int > 0 or item.foc > 0)) or (not item.perks):
         return False
     global xfile, sheet
     sheet.append([item.storage, item.type, item.tier, item.cls, item.name, item.gs, item.con, item.str, item.dex, item.int, item.foc, item.perks, 'BoE' if item.boe else '', 'BoP' if item.bop else ''])
