@@ -12,3 +12,13 @@ This is an early prototype of a storage helper tool for the New World game.
 6. Point mouse over an item and press `[Insert]` key to save that item
 7. Wait until you hear "Saved" in your headphones/speakers
 8. Results are saved to `storage.xlsx` file
+
+## Demo
+![demo](docs/demo.mp4)
+
+## What information is saved?
+
+Here is a screenshot from a sample storage file:
+
+![sample-storage](https://user-images.githubusercontent.com/7578087/213796350-d75593f5-7c43-4dd0-b8d1-eb2840733867.png)
+
