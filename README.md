@@ -14,7 +14,7 @@ This is an early prototype of a storage helper tool for the New World game.
 8. Results are saved to `storage.xlsx` file
 
 ## Demo
-![demo](docs/demo.mp4)
+[![Video Demo](docs/demo.mp4)]
 
 ## What information is saved?
 
