@@ -208,7 +208,9 @@ def ocr_worker():
         eres = cv2.matchTemplate(grayscale, eventItemFrame, cv2.TM_CCORR_NORMED)
         _, e_max_val, _, e_max_loc = cv2.minMaxLoc(eres)
         
-        print(t_max_val)
+        print("gs_max_val = %f" % gs_max_val)
+        print("a_max_val = %f" % a_max_val)
+        print("t_max_val = %f" % t_max_val)
         if gs_max_val > threshold and a_max_val > threshold and t_max_val > threshold:
             plot_image = None
             item = Item()
