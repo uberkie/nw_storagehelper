@@ -7,7 +7,8 @@ So far works only at 1920x1080 resolution. Will definitely need a rework to be r
 ## How to use:
 
 1. Start Anaconda prompt.
-2. Check `requirements.txt` and install dependencies
+2. cd into the directory
+2. Run pip -install -r requirements.txt to install dependencies
 3. Run the `main.py` script
 4. Start the game
 5. While in in-game chat, type `/brightwood`, `/bw`, `/everfall`, `/ef`, etc. to tell the script what storage you will be browsing.
