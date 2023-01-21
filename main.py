@@ -42,6 +42,8 @@ storage_commands = {
     '/br': 'Brightwood',
     '/ef': 'Everfall',
     '/ev': 'Everfall',
+    '/eb': 'Eastburn',
+    '/ea': 'Eastburn',
     '/ww': 'Winsward',
     '/wi': 'Winsward',
     '/fl': 'First Light',
@@ -61,10 +63,11 @@ storage_commands = {
     '/ls': 'Last Stand',
     '/la': 'Last Stand',
     '/mr': 'Mountainrise',
-    '/mou': 'Mountainrise',
+    '/mh': 'Mountainhome',
     '/tm': 'Taberna Mercatus',
     '/ta': 'Taberna Mercatus',
-    '/wa': 'Waa...'
+    '/wa': 'Wikala al-Waha',
+    '/wi': 'Wikala al-Waha'
 }
 cmd = ""
 snapshot_queue = queue.Queue()
@@ -75,11 +78,23 @@ sheet = xfile[xfile.sheetnames[0]]
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Tesseract-OCR\\tesseract.exe'
 current_storage = ""
 
+def str_to_int(str, default):
+    try:
+        res = int(str)
+    except ValueError:
+        res = default
+    return res
+
 def image_to_text(image):
     return pytesseract.image_to_string(image).strip()
 
 def image_to_number(image):
-    return pytesseract.image_to_string(image, config="--psm 13 digits").strip()
+    str = pytesseract.image_to_string(image, config="--psm 13 -c tessedit_char_whitelist='0123456789'").strip()
+    return str_to_int(str, 0)
+
+def alphanum(str):
+    str = ''.join([i for i in str if i.isalnum() or i.isspace() or i == "'"])
+    return str.strip()
 
 def tts_worker():
    tts = pyttsx3.init()
@@ -132,12 +147,39 @@ def on_key_release(e):
     if e.name == 'insert':
         snapshot()
 
+def apply_brightness_contrast(input_img, brightness = 0, contrast = 0):
+    if brightness != 0:
+        if brightness > 0:
+            shadow = brightness
+            highlight = 255
+        else:
+            shadow = 0
+            highlight = 255 + brightness
+        alpha_b = (highlight - shadow)/255
+        gamma_b = shadow
+        
+        buf = cv2.addWeighted(input_img, alpha_b, input_img, 0, gamma_b)
+    else:
+        buf = input_img.copy()
+    if contrast != 0:
+        f = 131*(contrast + 127)/(127*(131-contrast))
+        alpha_c = f
+        gamma_c = 127*(1-f)
+        
+        buf = cv2.addWeighted(buf, alpha_c, buf, 0, gamma_c)
+    return buf
+
+
 def ocr_worker():
     while True:
         storage, img = snapshot_queue.get()
 
         grayscale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        threshold = 0.9
+        bright = cv2.cvtColor(apply_brightness_contrast(img, 64, 64), cv2.COLOR_BGR2GRAY)
+        bright = cv2.threshold(bright, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+
+        contrast = apply_brightness_contrast(img, 0, 64)
+        threshold = 0.8
         item_box = [0, 0, 0, 0]
         title_box = [0, 0, 0, 0]
         tier_box = [0, 0, 0, 0]
@@ -156,25 +198,36 @@ def ocr_worker():
         ares = cv2.matchTemplate(grayscale, actionsIcon, cv2.TM_CCORR_NORMED)
         _, a_max_val, _, a_max_loc = cv2.minMaxLoc(ares)
 
-        weightIcon = cv2.imread('weight.png', 0)
-        ww, wh = weightIcon.shape[::-1]
-        wres = cv2.matchTemplate(grayscale, weightIcon, cv2.TM_CCORR_NORMED)
-        _, w_max_val, _, w_max_loc = cv2.minMaxLoc(wres)
+        tierTxt = cv2.imread('tier.png', 0)
+        tw, th = tierTxt.shape[::-1]
+        tres = cv2.matchTemplate(grayscale, tierTxt, cv2.TM_CCORR_NORMED)
+        _, t_max_val, _, t_max_loc = cv2.minMaxLoc(tres)
+
+        eventItemFrame = cv2.imread('event-item.png', 0)
+        ew, eh = eventItemFrame.shape[::-1]
+        eres = cv2.matchTemplate(grayscale, eventItemFrame, cv2.TM_CCORR_NORMED)
+        _, e_max_val, _, e_max_loc = cv2.minMaxLoc(eres)
         
-        if gs_max_val > threshold and a_max_val > threshold and w_max_val > threshold:
+        print(t_max_val)
+        if gs_max_val > threshold and a_max_val > threshold and t_max_val > threshold:
             plot_image = None
             item = Item()
             item.storage = storage
 
+            event_name_height = 0
+            print(e_max_val)
+            if (e_max_val > 0.65):
+                event_name_height = 41
+
             item_box[0] = gs_max_loc[0] - 16
             item_box[1] = a_max_loc[1]
             item_box[2] = item_box[0] + 360
-            item_box[3] = w_max_loc[1] - 24
+            item_box[3] = t_max_loc[1]
             
             title_box[0] = item_box[0] + 100
             title_box[1] = item_box[1] + 5
             title_box[2] = item_box[2] - 10
-            title_box[3] = gs_max_loc[1] - 65
+            title_box[3] = gs_max_loc[1] - (65 + event_name_height)
 
             tier_box[0] = title_box[0]
             tier_box[1] = title_box[3]
@@ -197,38 +250,43 @@ def ocr_worker():
             perks_box[3] = item_box[3] - 30
 
             bind_box[0] = item_box[0] + 2
-            bind_box[1] = w_max_loc[1] - 68
+            bind_box[1] = item_box[3] - 22
             bind_box[2] = item_box[2] - 2
-            bind_box[3] = bind_box[1] + 22
+            bind_box[3] = item_box[3]
            
             #item_img = grayscale[item_box[1]:item_box[3], item_box[0]:item_box[2]]
             
-            title_img = grayscale[title_box[1]:title_box[3], title_box[0]:title_box[2]]
+            title_img = bright[title_box[1]:title_box[3], title_box[0]:title_box[2]]
 
-            tier_img = grayscale[tier_box[1]:tier_box[3], tier_box[0]:tier_box[2]]
+            tier_img = contrast[tier_box[1]:tier_box[3], tier_box[0]:tier_box[2]]
 
-            type_img = grayscale[type_box[1]:type_box[3], type_box[0]:type_box[2]]
+            type_img = contrast[type_box[1]:type_box[3], type_box[0]:type_box[2]]
 
-            gs_img = grayscale[gs_box[1]:gs_box[3], gs_box[0]:gs_box[2]]
+            gs_img = contrast[gs_box[1]:gs_box[3], gs_box[0]:gs_box[2]]
 
-            perks_img = grayscale[perks_box[1]:perks_box[3], perks_box[0]:perks_box[2]]
+            perks_img = contrast[perks_box[1]:perks_box[3], perks_box[0]:perks_box[2]]
 
-            bind_img = grayscale[bind_box[1]:bind_box[3], bind_box[0]:bind_box[2]]
+            bind_img = contrast[bind_box[1]:bind_box[3], bind_box[0]:bind_box[2]]
 
-            #if numpy.any(gs_img):
-            #    plot_image = cv2.cvtColor(bind_img, cv2.COLOR_BGR2RGB)
+            #if numpy.any(bright):
+            #    plot_image = cv2.cvtColor(bright, cv2.COLOR_BGR2RGB)
             #    plot_queue.put((plot_image, None))
 
             if numpy.any(title_img):
-                item.name = image_to_text(title_img).replace('\r', ' ').replace('\n', ' ')
+                print(image_to_text(title_img))
+                item.name = alphanum(image_to_text(title_img).replace('\r', ' ').replace('\n', ' '))
             if numpy.any(tier_img):
-                item.cls = image_to_text(tier_img)
-                if "epic" in item.cls.lower():
-                    item.cls = "Epic"
+                item.cls = alphanum(image_to_text(tier_img))
                 if "legen" in item.cls.lower():
                     item.cls = "Legendary"
+                elif "epic" in item.cls.lower():
+                    item.cls = "Epic"
+                elif "rare" in item.cls.lower():
+                    item.cls = "Rare"
+                elif "comm" in item.cls.lower():
+                    item.cls = "Common"
             if numpy.any(type_img):
-                item.type = image_to_text(type_img)
+                item.type = alphanum(image_to_text(type_img))
             if numpy.any(gs_img):
                 item.gs = image_to_number(gs_img)
             if numpy.any(perks_img):
@@ -241,16 +299,25 @@ def ocr_worker():
                     item.boe = True
                 elif "pick" in bind.lower() or "play" in bind.lower():
                     item.bop = True
+            item.tier = get_tier(item.gs)
             print(vars(item))
             if store_data(item):
                 say('Saved.')
         snapshot_queue.task_done()
+
+def set_border(ws, cell_range):
+    thin = openpyxl.styles.Side(border_style="thin", color="000000")
+    for row in ws[cell_range]:
+        for cell in row:
+            cell.border = openpyxl.styles.Border(top=thin, left=thin, right=thin, bottom=thin)
 
 def store_data(item):
     if (not item.name) or (not item.gs) or (not (item.con or item.str or item.dex or item.int or item.foc)) or (not item.perks):
         return False
     global xfile, sheet
     sheet.append([item.storage, item.type, item.tier, item.cls, item.name, item.gs, item.con, item.str, item.dex, item.int, item.foc, item.perks, 'BoE' if item.boe else '', 'BoP' if item.bop else ''])
+    row = sheet.max_row
+    set_border(sheet, 'A%d:N%d' % (row, row))
     xfile.save('storage.xlsx')
     return True
 
@@ -264,9 +331,9 @@ def parse_stats(text, item):
     pattern = "[+][ ]?([\d]+)[ ]*([a-zA-Z]+).*"
     res = re.findall(pattern, text)
     for s in res:
-        value = s[0]
+        value = str_to_int(s[0], 0)
         type = s[1].strip().lower()
-        if not value.isdigit():
+        if value <= 0:
             continue
         if type.startswith("con"):
             item.con = value
@@ -278,6 +345,20 @@ def parse_stats(text, item):
             item.int = value
         elif type.startswith("foc"):
             item.foc = value
+
+def get_tier(gearscore):
+    if gearscore >= 500:
+        return "V"
+    elif gearscore >= 400:
+        return "IV"
+    elif gearscore >= 300:
+        return "III"
+    elif gearscore >= 200:
+        return "II"
+    elif gearscore >= 100:
+        return "I"
+    else:
+        return ""
 
 keyboard.on_release(on_key_release)
 threading.Thread(target=tts_worker, daemon=True).start()
