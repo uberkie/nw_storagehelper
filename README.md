@@ -2,6 +2,8 @@
 
 This is an early prototype of a storage helper tool for the New World game.
 
+So far works only at 1920x1080 resolution. Will definitely need a rework to be resolution independent.
+
 ## How to use:
 
 1. Start Anaconda prompt.
