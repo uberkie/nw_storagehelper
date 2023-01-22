@@ -1,6 +1,7 @@
 # nw_storagehelper
 
 This is an early prototype of a storage helper tool for the New World game.
+It only works for armor and weapons tier2 or greater
 
 So far works only at 1920x1080 resolution. Will definitely need a rework to be resolution independent.
 
