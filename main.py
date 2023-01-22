@@ -179,7 +179,7 @@ def ocr_worker():
         bright = cv2.threshold(bright, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
         contrast = apply_brightness_contrast(img, 0, 64)
-        threshold = 0.8
+        threshold = 0.6
         item_box = [0, 0, 0, 0]
         title_box = [0, 0, 0, 0]
         tier_box = [0, 0, 0, 0]
