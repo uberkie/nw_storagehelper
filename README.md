@@ -4,17 +4,26 @@ This is an early prototype of a storage helper tool for the New World game.
 
 So far works only at 1920x1080 resolution. Will definitely need a rework to be resolution independent.
 
+You need to have tesseract installed in the following directory
+'C:\Tesseract-OCR'
+You can download it from https://github.com/UB-Mannheim/tesseract/wiki
+Also you need to have python installed.
+
+Once that is done you can either use git clone or download the .exe file from the release page
+
 ## How to use:
 
 1. Start Anaconda prompt.
 2. cd into the directory
-2. Run pip -install -r requirements.txt to install dependencies
-3. Run the `main.py` script
-4. Start the game
-5. While in in-game chat, type `/brightwood`, `/bw`, `/everfall`, `/ef`, etc. to tell the script what storage you will be browsing.
-6. Point mouse over an item and press `[Insert]` key to save that item
-7. Wait until you hear "Saved" in your headphones/speakers
-8. Results are saved to `storage.xlsx` file
+  ##Skip step 3 if you downloaded the .exe file
+3. Run pip -install -r requirements.txt to install dependencies
+4. Run the `main.py` script. Useally the command will be 'python main.py'
+5. Start the game
+6. While in in-game type into the chat window `/brightwood`, `/bw`, `/everfall`, `/ef` etc, you dont have to press enter. to tell the script what storage      you will be browsing.
+7. Point mouse over an item and press `[Insert]` once  key to save that item
+8. Wait 1 or 2 seconds you hear "Saved" in your headphones/speakers
+9. Results are saved to `storage.xlsx` file.
+10. To browse the saved resaults
 
 Store location commands storage_commands = {
     '/bs': 'Brimstone Sands',
