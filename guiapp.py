@@ -41,7 +41,7 @@ def search():
                 result_text.insert(tk.END, f"Tier: {row['Tier']}\n")
                 result_text.insert(tk.END, f"Class: {row['Class']}\n")
                 result_text.insert(tk.END, f"Name: {row['Name']}\n")
-                result_text.insert(tk.END, f"Gearscore: {row['Gear Score']}\n")
+                result_text.insert(tk.END, f"Gearscore: {row['Gearscore']}\n")
                 result_text.insert(tk.END, f"CON: {row['CON']}\n")
                 result_text.insert(tk.END, f"STR: {row['STR']}\n")
                 result_text.insert(tk.END, f"DEX: {row['DEX']}\n")
