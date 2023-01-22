@@ -29,7 +29,7 @@ def search():
         # Filter the dataframe based on the query
         colm = ["Name", "CON", "STR", "DEX", "INT", "FOC", "BoE", "BoP"]
         for colms in colm:
-            filtered_df = df[(df['Perks'].str.contains(query, case=False)) | (df['Weptype'].str.contains(query, case=False) | (df['Name'].str.contains(query, case=False)))]
+            filtered_df = df[(df['Perks'].str.contains(query, case=False)) | (df['Type'].str.contains(query, case=False) | (df['Name'].str.contains(query, case=False)))]
             # Clear the text widget
             result_text.delete("1.0", tk.END)
 
@@ -37,11 +37,11 @@ def search():
     # Insert the filtered data into the text widget
             for index, row in filtered_df.iterrows():
                 result_text.insert(tk.END, f"Storage: {row['Storage']}\n")
-                result_text.insert(tk.END, f"Weptype: {row['Weptype']}\n")
+                result_text.insert(tk.END, f"Weptype: {row['Type']}\n")
                 result_text.insert(tk.END, f"Tier: {row['Tier']}\n")
                 result_text.insert(tk.END, f"Class: {row['Class']}\n")
                 result_text.insert(tk.END, f"Name: {row['Name']}\n")
-                result_text.insert(tk.END, f"Gearscore: {row['Gearscore']}\n")
+                result_text.insert(tk.END, f"Gearscore: {row['Gear Score']}\n")
                 result_text.insert(tk.END, f"CON: {row['CON']}\n")
                 result_text.insert(tk.END, f"STR: {row['STR']}\n")
                 result_text.insert(tk.END, f"DEX: {row['DEX']}\n")
@@ -67,7 +67,7 @@ result_text.grid(row=1, column=0, columnspan=3)
 def open_window_2():
     window_2 = tk.Toplevel(root)
     window_2.title("Title 2")
-    # Create a label to display "Hello world2"
+    # Create a label to display 
 
 # Create Entry widgets for row, column, and new value
 row_label = tk.Label(root, text="Enter Row Index:")
