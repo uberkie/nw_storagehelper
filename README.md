@@ -23,7 +23,7 @@ Once that is done you can either use git clone or download the .exe file from th
 7. Point mouse over an item and press `[Insert]` once  key to save that item
 8. Wait 1 or 2 seconds you hear "Saved" in your headphones/speakers
 9. Results are saved to `storage.xlsx` file.
-10. To browse the saved resaults
+10. To browse the saved resaults run the gui app the command will be 'python guiapp.py'
 
 Store location commands storage_commands = {
     '/bs': 'Brimstone Sands',
