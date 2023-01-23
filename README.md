@@ -76,10 +76,10 @@ Here is a screenshot from a sample storage file:
 ![sample-storage](https://user-images.githubusercontent.com/7578087/213796350-d75593f5-7c43-4dd0-b8d1-eb2840733867.png)
 
 The gui displays according to weapon type and perks
-Search for a Void Guantlet
+## Search for a Void Guantlet
 ![voidnw](https://user-images.githubusercontent.com/44478849/213962090-616ee1fd-03a0-49dc-b250-440887e3073d.png)
 
-Search for Fire
+## Search for Fire
 ![firenw](https://user-images.githubusercontent.com/44478849/213962131-5f48722c-12e8-4748-9b80-8f03943f86dc.png)
 
 
