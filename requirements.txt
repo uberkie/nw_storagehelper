@@ -6,3 +6,5 @@ pyttsx3
 openpyxl
 mss
 matplotlib
+tkinter
+pandas
