@@ -26,48 +26,31 @@ Once that is done you can either use git clone or download the .exe file from th
 9. Results are saved to `storage.xlsx` file.
 10. To browse the saved resaults run the gui app the command will be 'python guiapp.py'
 
-Store location commands storage_commands = {
-    '/bs': 'Brimstone Sands',
-    '/bm': 'Brimstone Sands',
-    '/eb': 'Ebonscale',
-    '/es': 'Ebonscale',
-    '/mb': 'Monarch Buffs',
-    '/mon': 'Monarch Buffs',
-    '/ck': 'Cutlass Keys',
-    '/cu': 'Cutlass Keys',
-    '/bw': 'Brightwood',
-    '/br': 'Brightwood',
-    '/ef': 'Everfall',
-    '/ev': 'Everfall',
-    '/eb': 'Eastburn',
-    '/ea': 'Eastburn',
-    '/ww': 'Winsward',
-    '/wi': 'Winsward',
-    '/fl': 'First Light',
-    '/fi': 'First Light',
-    '/wf': 'Weaver''s Fen',
-    '/we': 'Weaver''s Fen',
-    '/rw': 'Reekwater',
-    '/ree': 'Reekwater',
-    '/md': 'Mourningdale',
-    '/mo': 'Mourningdale',
-    '/rs': 'Restless Shores',
-    '/res': 'Restless Shores',
-    '/cp': 'Cleave''s Point',
-    '/cl': 'Cleave''s Point',
-    '/vh': 'Valor Hold',
-    '/va': 'Valor Hold',
-    '/ls': 'Last Stand',
-    '/la': 'Last Stand',
-    '/mr': 'Mountainrise',
-    '/mh': 'Mountainhome',
-    '/tm': 'Taberna Mercatus',
-    '/ta': 'Taberna Mercatus',
-    '/wa': 'Wikala al-Waha',
-    '/wi': 'Wikala al-Waha'
+Store location commands:
+```
+/bs /bm  = Brimstone Sands
+/eb /es  = Ebonscale
+/mb /mon = Monarch Buffs
+/ck /cu  = Cutlass Keys
+/bw /br  = Brightwood
+/ef /ev  = Everfall
+/eb /ea  = Eastburn
+/ww /wi  = Winsward
+/fl /fi  = First Light
+/wf /we  = Weavers Fen
+/rw /ree = Reekwater
+/md /mo  = Mourningdale
+/rs /res = Restless Shores
+/cp /cl  = Cleaves Point
+/vh /va  = Valor Hold
+/ls /la  = Last Stand
+/mr /mh  = Mountainrise
+/tm /ta  = Taberna Mercatus
+/wa /wi  = Wikala al-Waha
+```
 
 ## Demo
-[![Video Demo](docs/demo.mp4)]
+https://user-images.githubusercontent.com/7578087/214102154-3e4e15ef-1b4c-4923-adb9-d3598f6f98a2.mp4
 
 ## What information is saved?
 
