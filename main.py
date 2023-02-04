@@ -79,7 +79,7 @@ snapshot_queue = queue.Queue()
 tts_queue = queue.Queue()
 plot_queue = queue.Queue()
 
-pytesseract.pytesseract.tesseract_cmd
+pytesseract.pytesseract.tesseract_cmd = r'C:\\Tesseract-OCR\\tesseract.exe'
 current_storage = ""
 
 
