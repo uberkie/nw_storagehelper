@@ -23,8 +23,14 @@ Once that is done you can either use git clone or download the .exe file from th
 6. While in in-game type into the chat window `/brightwood`, `/bw`, `/everfall`, `/ef` etc, you dont have to press enter. to tell the script what storage      you will be browsing.
 7. Point mouse over an item and press `[Insert]` once  key to save that item
 8. Wait 1 or 2 seconds you hear "Saved" in your headphones/speakers
-9. Results are saved to `storage.xlsx` file.
+9. Results are saved to `newworld.db` file.
 10. To browse the saved resaults run the gui app the command will be 'python guiapp.py'
+
+11. In the GUI in the search bar you can seacrh  for any perk/item type/gearscore
+12. You can also with 2 condition "freedom+shirking fortify" this will return all items whit those 2 perks where the + is the delimeter
+13. You can also "fre+shi for" to search it matches characters not the actuall word.
+14. All the columns can be use to filter ascending or descending order
+15. To delte a item just select the item and click delete
 
 Store location commands:
 ```
