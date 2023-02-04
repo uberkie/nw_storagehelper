@@ -14,12 +14,8 @@ import random
 import sqlite3
 
 
-
-
-
 # Fetch the data from the database
 # ata = cursor.execute("SELECT * FROM Storage ").fetchall()
-
 
 
 class Item:
@@ -82,7 +78,6 @@ cmd = ""
 snapshot_queue = queue.Queue()
 tts_queue = queue.Queue()
 plot_queue = queue.Queue()
-
 
 pytesseract.pytesseract.tesseract_cmd
 current_storage = ""
@@ -343,9 +338,11 @@ def store_data(item):
     c = conn.cursor()
     c.execute("""
         CREATE TABLE IF NOT EXISTS storage (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             Storage text,
             Type text,
             Tier text,
+            cls text,
             Name text,
             Gearscore text,
             CON text,
@@ -359,13 +356,14 @@ def store_data(item):
         )
     """)
     c.execute("""
-        INSERT INTO storage (Storage, Type, Tier, Name, Gearscore, CON, STR, DEX, INT, FOC, Perks, BoE, BoP)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, [item.storage, item.type, item.tier, item.name, item.gs, item.con, item.str, item.dex, item.int,
+        INSERT INTO storage (Storage, Type, Tier, cls, Name, Gearscore, CON , STR, DEX, INT, FOC, Perks, BoE, BoP)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, [item.storage, item.type, item.tier, item.cls, item.name, item.gs, item.con, item.str, item.dex, item.int,
           item.foc, item.perks, 'BoE' if item.boe else '', 'BoP' if item.bop else ''])
     conn.commit()
     conn.close()
     return True
+
 
 def parse_perks(text, item):
     pattern = "([a-zA-Z ]*):.*"
