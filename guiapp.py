@@ -6,7 +6,7 @@ import tkinter.simpledialog as simpledialog
 root = tk.Tk()
 
 # Connect to the database
-conn = sqlite3.connect("nw_storagehelper/newworld.db")
+conn = sqlite3.connect("newworld.db")
 cursor = conn.cursor()
 
 # Fetch the data
