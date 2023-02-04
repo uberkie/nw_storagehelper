@@ -1,12 +1,18 @@
+import sys
 import tkinter as tk
 import tkinter.ttk as ttk
 import sqlite3
 import tkinter.simpledialog as simpledialog
+import os
+import subprocess
 
 root = tk.Tk()
 
 # Connect to the database
+
+
 conn = sqlite3.connect("newworld.db")
+
 cursor = conn.cursor()
 
 # Fetch the data
@@ -130,6 +136,7 @@ def delete_data():
 
     # Delete the selected row from the treeview
     tree.delete(selected_item)
+    conn.close()
 
 
 # Add a button to delete the selected row
@@ -138,4 +145,14 @@ delete_button.pack()
 
 tree.pack()
 
+
+def restart_program():
+    python = sys.executable
+    subprocess.Popen([python, __file__], close_fds=True)
+    root.quit()
+
+
+# Button to restart the script
+refresh_button = tk.Button(root, text='Refresh', command=restart_program)
+refresh_button.pack()
 root.mainloop()
